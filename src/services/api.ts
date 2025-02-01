@@ -76,3 +76,27 @@ export async function getPrefectures() {
 
   return json.result;
 }
+
+export async function getPopulation(prefCode: number) {
+  if (prefCode < 1 || prefCode > 47) {
+    throw new Error(`There is no prefecture with the code ${prefCode}`);
+  }
+
+  const res = await fetch(
+    `https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/population/composition/perYear?prefCode=${prefCode}`,
+    {
+      method: 'GET',
+      headers: {
+        'X-API-KEY': process.env.X_API_KEY || '',
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch prefectures');
+  }
+
+  const json = await res.json();
+
+  return json.result;
+}
