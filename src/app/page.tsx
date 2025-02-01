@@ -1,3 +1,5 @@
+import PrefectureSelector from '@/components/PrefectureSelector';
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -8,6 +10,7 @@ export default function Home() {
         <p className="text-gray-700 dark:text-gray-300">
           This is a minimal Next.js setup.
         </p>
+        <PrefectureSelector />
       </main>
       <footer className="p-5 text-center text-sm text-gray-500">
         © {new Date().getFullYear()} Firas. All rights reserved.
