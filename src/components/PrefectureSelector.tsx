@@ -1,8 +1,12 @@
-import { getPrefectures } from '@/services/api';
+'use client';
+
 import { Key } from 'react';
 
-export default async function PrefectureSelector() {
-  const prefectures = await getPrefectures();
+export default function PrefectureSelector({
+  prefectures,
+}: {
+  prefectures: { prefCode: number; prefName: string }[];
+}) {
   return (
     <>
       <div className="flex flex-wrap w-108 space-x-2">
