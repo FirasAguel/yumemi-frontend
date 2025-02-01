@@ -1,6 +1,6 @@
 'use server';
 
-export default async function getPrefectures() {
+export async function getPrefectures() {
   // Commented out API fetch for local testing to avoid unnecessary API calls
   /*
   const res = await fetch(

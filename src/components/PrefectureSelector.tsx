@@ -1,4 +1,4 @@
-import getPrefectures from '@/services/api';
+import { getPrefectures } from '@/services/api';
 import { Key } from 'react';
 
 export default async function PrefectureSelector() {
