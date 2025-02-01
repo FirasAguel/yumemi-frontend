@@ -1,10 +1,21 @@
 'use client';
+import { useState } from 'react';
 
 export default function PrefectureSelector({
   prefectures,
 }: {
   prefectures: { prefCode: number; prefName: string }[];
 }) {
+  const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
+
+  const toggleSelection = (prefCode: number) => {
+    setSelectedPrefectures((prevSelected) =>
+      prevSelected.includes(prefCode)
+        ? prevSelected.filter((code) => code !== prefCode)
+        : [...prevSelected, prefCode]
+    );
+  };
+
   return (
     <>
       <div className="flex flex-wrap w-108 space-x-2">
@@ -15,6 +26,8 @@ export default function PrefectureSelector({
                 <input
                   type="checkbox"
                   id={`pref-${prefecture.prefCode}`}
+                  checked={selectedPrefectures.includes(prefecture.prefCode)}
+                  onChange={() => toggleSelection(prefecture.prefCode)}
                 ></input>
                 <label htmlFor={`pref-${prefecture.prefCode}`}>
                   {prefecture.prefName}
