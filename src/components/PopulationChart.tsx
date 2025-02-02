@@ -27,7 +27,16 @@ export default function PopulationChart({
         <Tooltip />
         <Legend />
 
-        <Line type="monotone" dataKey="Pref-1" stroke="#8884d8" />
+        {Object.keys(populationData[0])
+          .filter((key) => key !== 'year')
+          .map((prefCode) => (
+            <Line
+              key={prefCode}
+              type="monotone"
+              dataKey={prefCode}
+              stroke="#8884d8"
+            />
+          ))}
       </LineChart>
     </ResponsiveContainer>
   );
