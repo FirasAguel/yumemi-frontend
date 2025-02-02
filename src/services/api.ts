@@ -77,25 +77,6 @@ export async function getPrefectures() {
   return json.result;
 }
 
-interface PopulationDataEntry {
-  year: number;
-  value: number;
-  rate?: number;
-}
-
-interface PopulationType {
-  label: string;
-  data: PopulationDataEntry[];
-}
-
-interface PopulationResponse {
-  message: string | null;
-  result: {
-    boundaryYear: number;
-    data: PopulationType[];
-  };
-}
-
 export async function getPopulation(prefCode: number): Promise<{
   boundaryYear: number;
   populationData: { year: number; [key: string]: number }[];
