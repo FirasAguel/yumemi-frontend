@@ -51,6 +51,7 @@ export default function PopulationChart({
                 data={solidData}
                 stroke="#8884d8"
                 strokeDasharray="0"
+                isAnimationActive={false}
               />,
               <Line
                 key={`${prefCode}-dashed`}
@@ -60,6 +61,7 @@ export default function PopulationChart({
                 stroke="#8884d8"
                 strokeDasharray="3 3"
                 legendType="none"
+                isAnimationActive={true}
               />,
             ];
           })}
