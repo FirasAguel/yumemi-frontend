@@ -23,19 +23,36 @@ export default function PopulationChart({
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="year" />
+        <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
         <YAxis />
         <Tooltip />
         <Legend />
-
         {Object.keys(populationData[0])
           .filter((key) => key !== 'year')
           .map((prefCode) => (
             <Line
-              key={prefCode}
+              key={`${prefCode}-solid`}
               type="monotone"
               dataKey={prefCode}
+              data={populationData.filter(
+                (entry) => entry.year <= boundaryYears[prefCode]
+              )}
               stroke="#8884d8"
+              strokeDasharray="0"
+            />
+          ))}
+        {Object.keys(populationData[0])
+          .filter((key) => key !== 'year')
+          .map((prefCode) => (
+            <Line
+              key={`${prefCode}-dashed`}
+              type="monotone"
+              dataKey={prefCode}
+              data={populationData.filter(
+                (entry) => entry.year >= boundaryYears[prefCode]
+              )}
+              stroke="#8884d8"
+              strokeDasharray="3 3"
             />
           ))}
       </LineChart>

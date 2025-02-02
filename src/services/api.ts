@@ -211,7 +211,7 @@ export async function getPopulation(prefCode: number): Promise<{
         ? {
             message: null,
             result: {
-              boundaryYear: 2020,
+              boundaryYear: 2000, //using different year for testing
               data: [
                 {
                   label: '総人口',
