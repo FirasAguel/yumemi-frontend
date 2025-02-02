@@ -29,7 +29,7 @@ export default function PopulationChart({
         <Legend />
         {Object.keys(populationData[0])
           .filter((key) => key !== 'year')
-          .map((prefCode) => (
+          .flatMap((prefCode) => [
             <Line
               key={`${prefCode}-solid`}
               type="monotone"
@@ -39,11 +39,7 @@ export default function PopulationChart({
               )}
               stroke="#8884d8"
               strokeDasharray="0"
-            />
-          ))}
-        {Object.keys(populationData[0])
-          .filter((key) => key !== 'year')
-          .map((prefCode) => (
+            />,
             <Line
               key={`${prefCode}-dashed`}
               type="monotone"
@@ -53,8 +49,8 @@ export default function PopulationChart({
               )}
               stroke="#8884d8"
               strokeDasharray="3 3"
-            />
-          ))}
+            />,
+          ])}
       </LineChart>
     </ResponsiveContainer>
   );
