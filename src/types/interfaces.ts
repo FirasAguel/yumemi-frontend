@@ -32,5 +32,5 @@ export interface ChartPopulationData {
 // Props for PopulationChart Component
 export interface PopulationChartProps {
   populationData: YearlyPopulationData[];
-  boundaryYear: number;
+  boundaryYears: { [key: string]: number };
 }

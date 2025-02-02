@@ -12,6 +12,11 @@ export default async function Home() {
     ...data2.populationData[index],
   }));
   console.log(combinedData);
+  const boundaryYears = {
+    'Pref-1': data1.boundaryYear,
+    'Pref-2': data2.boundaryYear,
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="p-5 text-center text-xl font-semibold">
@@ -25,8 +30,8 @@ export default async function Home() {
         <div className="w-1/2 max-w-4xl h-auto p-4">
           <h2>人口構成グラフ</h2>
           <PopulationChart
-            boundaryYear={data1.boundaryYear}
             populationData={combinedData}
+            boundaryYears={boundaryYears}
           />
         </div>
       </main>

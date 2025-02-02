@@ -14,6 +14,7 @@ import { PopulationChartProps } from '@/types/interfaces';
 
 export default function PopulationChart({
   populationData,
+  boundaryYears,
 }: PopulationChartProps) {
   return (
     <ResponsiveContainer width="100%" height={400}>
