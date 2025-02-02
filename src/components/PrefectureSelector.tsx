@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import PopulationChart from '@/components/PopulationChart';
 
 export default function PrefectureSelector({
   prefectures,
@@ -98,6 +99,10 @@ export default function PrefectureSelector({
             );
           }
         )}
+      </div>
+      <div className="w-1/2 max-w-4xl h-auto p-4">
+        <h2>人口構成グラフ</h2>
+        <PopulationChart />
       </div>
     </>
   );
