@@ -21,7 +21,10 @@ export default async function Home() {
         <PrefectureSelector prefectures={prefectures} />
         <div className="w-1/2 max-w-4xl h-auto p-4">
           <h2>人口構成グラフ</h2>
-          <PopulationChart />
+          <PopulationChart
+            populationData={data1.populationData}
+            boundaryYear={data1.boundaryYear}
+          />
         </div>
       </main>
       <footer className="p-5 text-center text-sm text-gray-500">
