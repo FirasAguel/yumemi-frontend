@@ -8,14 +8,6 @@ export default function PrefectureSelector({
 }) {
   const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
 
-  const toggleSelection = (prefCode: number) => {
-    setSelectedPrefectures((prevSelected) =>
-      prevSelected.includes(prefCode)
-        ? prevSelected.filter((code) => code !== prefCode)
-        : [...prevSelected, prefCode]
-    );
-  };
-
   const selectAll = () => {
     const allPrefCodes = prefectures.map((pref) => pref.prefCode);
     setSelectedPrefectures(allPrefCodes);
@@ -23,6 +15,48 @@ export default function PrefectureSelector({
 
   const deselectAll = () => {
     setSelectedPrefectures([]);
+  };
+
+  const [lastClickedPrefCode, setLastClickedPrefCode] = useState<number | null>(
+    null
+  );
+
+  const handleCheckboxClick = (
+    prefCode: number,
+    event: React.MouseEvent<HTMLInputElement>
+  ) => {
+    if (event.shiftKey && lastClickedPrefCode !== null) {
+      const start = Math.min(lastClickedPrefCode, prefCode);
+      const end = Math.max(lastClickedPrefCode, prefCode);
+
+      setSelectedPrefectures((prevSelected) => {
+        const isSelecting = !prevSelected.includes(prefCode);
+
+        const newSelected = [...prevSelected];
+        for (let code = start; code <= end; code++) {
+          if (isSelecting) {
+            if (!newSelected.includes(code)) {
+              newSelected.push(code);
+            }
+          } else {
+            const index = newSelected.indexOf(code);
+            if (index !== -1) {
+              newSelected.splice(index, 1);
+            }
+          }
+        }
+
+        return newSelected;
+      });
+    } else {
+      setSelectedPrefectures((prevSelected) =>
+        prevSelected.includes(prefCode)
+          ? prevSelected.filter((code) => code !== prefCode)
+          : [...prevSelected, prefCode]
+      );
+    }
+
+    setLastClickedPrefCode(prefCode);
   };
 
   return (
@@ -50,7 +84,8 @@ export default function PrefectureSelector({
                   type="checkbox"
                   id={`pref-${prefecture.prefCode}`}
                   checked={selectedPrefectures.includes(prefecture.prefCode)}
-                  onChange={() => toggleSelection(prefecture.prefCode)}
+                  onClick={(e) => handleCheckboxClick(prefecture.prefCode, e)}
+                  onChange={() => {}} // Dummy handler for React warnings
                 ></input>
                 <label htmlFor={`pref-${prefecture.prefCode}`}>
                   {prefecture.prefName}
