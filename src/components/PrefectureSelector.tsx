@@ -59,6 +59,10 @@ export default function PrefectureSelector({
     setLastClickedPrefCode(prefCode);
   };
 
+  // TODO: Refactor checkbox + label elements into a separate React component (PrefectureCheckbox).
+  // As part of this refactor, implement shift-click support on <label> to ensure consistent selection
+  // behavior when clicking either the checkbox or the label.
+
   return (
     <>
       <div className="flex space-x-4 mb-4">
