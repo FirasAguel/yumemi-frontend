@@ -52,6 +52,8 @@ export default function PopulationChart({
                 stroke="#8884d8"
                 strokeDasharray="0"
                 isAnimationActive={false}
+                dot={false}
+                activeDot={false}
               />,
               <Line
                 key={`${prefCode}-dashed`}
@@ -63,6 +65,8 @@ export default function PopulationChart({
                 legendType="none"
                 isAnimationActive={true}
                 tooltipType="none"
+                dot={false}
+                activeDot={false}
               />,
             ];
           })}
