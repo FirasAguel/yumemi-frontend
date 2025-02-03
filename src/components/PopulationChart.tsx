@@ -62,6 +62,7 @@ export default function PopulationChart({
                 strokeDasharray="3 3"
                 legendType="none"
                 isAnimationActive={true}
+                tooltipType="none"
               />,
             ];
           })}
