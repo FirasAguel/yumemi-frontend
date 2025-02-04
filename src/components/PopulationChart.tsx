@@ -11,23 +11,20 @@ import {
 } from 'recharts';
 
 import { usePopulationData } from '@/hooks/usePopulationData';
-import { PopulationChartProps } from '@/types/interfaces';
 
-export default function PopulationChart({
-  populationData,
-  boundaryYears,
-}: PopulationChartProps) {
+export default function PopulationChart() {
   const { data, isLoading, isError } = usePopulationData(1); // Example for Pref-1
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading data.</p>;
 
-  const chartData = data?.populationData || populationData;
+  const populationData = data?.populationData;
+  const boundaryYear = data?.boundaryYear;
 
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart
-        data={chartData}
+        data={populationData}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
@@ -35,16 +32,15 @@ export default function PopulationChart({
         <YAxis />
         <Tooltip />
         <Legend />
-        {Object.keys(chartData[0])
+        {Object.keys(populationData[0])
           .filter((key) => key !== 'year')
           .flatMap((prefCode) => {
             const solidData = [];
             const dashedData = [];
-            // assumes populationData is sorted by year in ascending order
-            for (const entry of chartData) {
-              if (entry.year < boundaryYears[prefCode]) {
+            for (const entry of populationData) {
+              if (entry.year < boundaryYear) {
                 solidData.push(entry);
-              } else if (entry.year > boundaryYears[prefCode]) {
+              } else if (entry.year > boundaryYear) {
                 dashedData.push(entry);
               } else {
                 solidData.push(entry);
