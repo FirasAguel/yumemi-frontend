@@ -1,6 +1,8 @@
 'use server';
 
-export async function getPrefectures() {
+import { Prefecture } from '@/types/interfaces';
+
+export async function getPrefectures(): Promise<Prefecture[]> {
   // Commented out API fetch for local testing to avoid unnecessary API calls
   /*
   const res = await fetch(

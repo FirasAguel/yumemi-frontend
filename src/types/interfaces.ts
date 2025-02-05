@@ -1,3 +1,8 @@
+export interface Prefecture {
+  prefCode: number;
+  prefName: string;
+}
+
 // Raw API Population Data
 export interface PopulationDataEntry {
   year: number;

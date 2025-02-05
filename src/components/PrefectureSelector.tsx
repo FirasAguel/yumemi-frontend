@@ -1,10 +1,11 @@
 'use client';
+import { Prefecture } from '@/types/interfaces';
 import { useState } from 'react';
 
 export default function PrefectureSelector({
   prefectures,
 }: {
-  prefectures: { prefCode: number; prefName: string }[];
+  prefectures: Prefecture[];
 }) {
   const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
 

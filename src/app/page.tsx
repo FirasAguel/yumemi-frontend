@@ -1,9 +1,10 @@
 import { getPrefectures } from '@/services/api';
 import PrefectureSelector from '@/components/PrefectureSelector';
 import PopulationChart from '@/components/PopulationChart';
+import { Prefecture } from '@/types/interfaces';
 
 export default async function Home() {
-  const prefectures = await getPrefectures();
+  const prefectures: Prefecture[] = await getPrefectures();
 
   return (
     <div className="flex flex-col min-h-screen">
