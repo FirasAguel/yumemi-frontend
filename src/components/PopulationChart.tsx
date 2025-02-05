@@ -12,14 +12,18 @@ import {
 
 import { usePopulationData } from '@/hooks/usePopulationData';
 
-export default function PopulationChart() {
-  const { data, isLoading, isError } = usePopulationData(1); // Example for Pref-1
+export default function PopulationChart({
+  selectedPrefectures,
+}: {
+  selectedPrefectures: number[];
+}) {
+  const { data, isLoading, isError } = usePopulationData(selectedPrefectures);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading data.</p>;
 
-  const populationData = data?.populationData;
-  const boundaryYear = data?.boundaryYear;
+  const populationData = data?.populationData || [];
+  const boundaryYears = data?.boundaryYears || {};
 
   return (
     <ResponsiveContainer width="100%" height={400}>
@@ -32,15 +36,15 @@ export default function PopulationChart() {
         <YAxis />
         <Tooltip />
         <Legend />
-        {Object.keys(populationData[0])
+        {Object.keys(populationData[0] || {})
           .filter((key) => key !== 'year')
           .flatMap((prefCode) => {
             const solidData = [];
             const dashedData = [];
             for (const entry of populationData) {
-              if (entry.year < boundaryYear) {
+              if (entry.year < boundaryYears[prefCode]) {
                 solidData.push(entry);
-              } else if (entry.year > boundaryYear) {
+              } else if (entry.year > boundaryYears[prefCode]) {
                 dashedData.push(entry);
               } else {
                 solidData.push(entry);
