@@ -1,6 +1,6 @@
 'use server';
 
-import { Prefecture } from '@/types/interfaces';
+import { Prefecture, ChartPopulationData } from '@/types/interfaces';
 
 export async function getPrefectures(): Promise<Prefecture[]> {
   // Commented out API fetch for local testing to avoid unnecessary API calls
@@ -79,10 +79,9 @@ export async function getPrefectures(): Promise<Prefecture[]> {
   return json.result;
 }
 
-export async function getPopulation(prefCode: number): Promise<{
-  boundaryYear: number;
-  populationData: { year: number; [key: string]: number }[];
-}> {
+export async function getPopulation(
+  prefCode: number
+): Promise<ChartPopulationData> {
   if (prefCode < 1 || prefCode > 47) {
     throw new Error(`There is no prefecture with the code ${prefCode}`);
   }
