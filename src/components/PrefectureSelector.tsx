@@ -1,4 +1,3 @@
-'use client';
 import { Prefecture } from '@/types/interfaces';
 import { useState } from 'react';
 
