@@ -1,7 +1,6 @@
 import { getPrefectures } from '@/services/api';
-import PrefectureSelector from '@/components/PrefectureSelector';
-import PopulationChart from '@/components/PopulationChart';
 import { Prefecture } from '@/types/interfaces';
+import ChartController from '@/components/ChartController';
 
 export default async function Home() {
   const prefectures: Prefecture[] = await getPrefectures();
@@ -15,11 +14,7 @@ export default async function Home() {
         <p className="text-gray-700 dark:text-gray-300">
           This is a minimal Next.js setup.
         </p>
-        <PrefectureSelector prefectures={prefectures} />
-        <div className="w-1/2 max-w-4xl h-auto p-4">
-          <h2>人口構成グラフ</h2>
-          <PopulationChart />
-        </div>
+        <ChartController prefectures={prefectures} />
       </main>
       <footer className="p-5 text-center text-sm text-gray-500">
         © {new Date().getFullYear()} Firas. All rights reserved.
