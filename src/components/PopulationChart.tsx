@@ -72,7 +72,7 @@ export default function PopulationChart({
                 stroke="#8884d8"
                 strokeDasharray="3 3"
                 legendType="none"
-                isAnimationActive={true}
+                isAnimationActive={false}
                 tooltipType="none"
                 dot={false}
                 activeDot={false}
