@@ -28,7 +28,10 @@ export default function ChartController({
       />
       <div className="w-1/2 max-w-4xl h-auto p-4">
         <h2>人口構成グラフ</h2>
-        <PopulationChart selectedPrefectures={selectedPrefectures} />
+        <PopulationChart
+          selectedPrefectures={selectedPrefectures}
+          populationType={selectedPopulationType}
+        />
       </div>
     </div>
   );

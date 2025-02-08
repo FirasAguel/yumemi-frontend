@@ -14,8 +14,10 @@ import { usePopulationData } from '@/hooks/usePopulationData';
 
 export default function PopulationChart({
   selectedPrefectures,
+  populationType,
 }: {
   selectedPrefectures: number[];
+  populationType: string;
 }) {
   const { data, isLoading, isError } = usePopulationData(selectedPrefectures);
 
