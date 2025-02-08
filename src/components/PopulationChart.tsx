@@ -57,6 +57,7 @@ export default function PopulationChart({
                 dashedData.push(entry);
               }
             }
+            const duration = 1500;
             return [
               <Line
                 key={`${prefCode}-solid`}
@@ -65,7 +66,9 @@ export default function PopulationChart({
                 data={solidData}
                 stroke="#8884d8"
                 strokeDasharray="0"
-                isAnimationActive={false}
+                isAnimationActive={true}
+                animationDuration={duration}
+                animationEasing="linear"
                 dot={false}
                 activeDot={false}
               />,
@@ -77,7 +80,9 @@ export default function PopulationChart({
                 stroke="#8884d8"
                 strokeDasharray="3 3"
                 legendType="none"
-                isAnimationActive={false}
+                isAnimationActive={true}
+                animationBegin={duration}
+                animationEasing="linear"
                 tooltipType="none"
                 dot={false}
                 activeDot={false}
