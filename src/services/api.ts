@@ -1,6 +1,6 @@
 'use server';
 
-import { Prefecture, ChartPopulationData } from '@/types/interfaces';
+import { Prefecture, FullPopulationData } from '@/types/interfaces';
 
 export async function getPrefectures(): Promise<Prefecture[]> {
   // Commented out API fetch for local testing to avoid unnecessary API calls
@@ -81,7 +81,7 @@ export async function getPrefectures(): Promise<Prefecture[]> {
 
 export async function getPopulation(
   prefCode: number
-): Promise<ChartPopulationData> {
+): Promise<FullPopulationData> {
   if (prefCode < 1 || prefCode > 47) {
     throw new Error(`There is no prefecture with the code ${prefCode}`);
   }
@@ -357,33 +357,8 @@ export async function getPopulation(
             },
           };
 
-  const totalPopulation = json.result?.data.find(
-    (item) => item.label === '総人口'
-  )?.data;
-
-  // The remaining data types are also handled in the same way
-  // but currently using 総人口 only, for development
-  /* 
-  const youthPopulation = json.result.data.find(
-    (item) => item.label === '年少人口'
-  )?.data;
-
-  const workingAgePopulation = json.result.data.find(
-    (item) => item.label === '生産年齢人口'
-  )?.data;
-
-  const elderlyPopulation = json.result.data.find(
-    (item) => item.label === '老年人口'
-  )?.data;
-  */
-
-  if (!totalPopulation) throw new Error('総人口 data not found');
-
   return {
     boundaryYear: json.result.boundaryYear,
-    populationData: totalPopulation.map((entry) => ({
-      year: entry.year,
-      [`Pref-${prefCode}`]: entry.value,
-    })),
+    populationData: json.result.data,
   };
 }
