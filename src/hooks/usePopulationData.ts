@@ -1,7 +1,7 @@
 import { mutate } from 'swr';
 import { getPopulation } from '@/services/api';
 import { ChartPopulationData } from '@/types/interfaces';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // Function to fetch and cache prefecture data without using hooks
 export const fetchAndCachePrefecture = async (prefCode: number) => {
@@ -46,7 +46,12 @@ export const usePopulationData = (
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
+  let previousType = useRef<string | null>(null);
+
   useEffect(() => {
+    if (previousType.current === populationType) return; // Skip if populationType hasn’t changed
+    previousType.current = populationType; // Update the stored type
+
     console.log('Hook 1 called');
     let isMounted = true;
     const controller = new AbortController();
