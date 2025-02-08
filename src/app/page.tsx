@@ -1,8 +1,10 @@
 import { getPrefectures } from '@/services/api';
-import PrefectureSelector from '@/components/PrefectureSelector';
+import { Prefecture } from '@/types/interfaces';
+import ChartController from '@/components/ChartController';
 
 export default async function Home() {
-  const prefectures = await getPrefectures();
+  const prefectures: Prefecture[] = await getPrefectures();
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="p-5 text-center text-xl font-semibold">
@@ -12,7 +14,7 @@ export default async function Home() {
         <p className="text-gray-700 dark:text-gray-300">
           This is a minimal Next.js setup.
         </p>
-        <PrefectureSelector prefectures={prefectures} />
+        <ChartController prefectures={prefectures} />
       </main>
       <footer className="p-5 text-center text-sm text-gray-500">
         © {new Date().getFullYear()} Firas. All rights reserved.
