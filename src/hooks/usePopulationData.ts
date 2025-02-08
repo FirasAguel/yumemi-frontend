@@ -16,13 +16,30 @@ export const fetchAndCachePrefecture = async (prefCode: number) => {
   // Fetch if data isn't cached
   const data = await getPopulation(prefCode);
 
-  // Cache the fetched data
-  mutate(key, { prefCode, data }, false); // Cache without revalidation
+  // Transform all population types during caching
+  const transformedData = data.populationData.reduce(
+    (acc: { [key: string]: ChartPopulationData }, item) => {
+      acc[item.label] = {
+        boundaryYear: data.boundaryYear,
+        populationData: item.data.map((entry) => ({
+          year: entry.year,
+          [`Pref-${prefCode}`]: entry.value,
+        })),
+      };
+      return acc;
+    },
+    {}
+  );
 
-  return { prefCode, data };
+  // Cache the fetched data
+  mutate(key, transformedData, false);
+  return transformedData;
 };
 
-export const usePopulationData = (prefCodes: number[]) => {
+export const usePopulationData = (
+  prefCodes: number[],
+  populationType: string
+) => {
   const [combinedData, setCombinedData] = useState<
     { prefCode: number; data: ChartPopulationData }[]
   >([]);
@@ -30,25 +47,25 @@ export const usePopulationData = (prefCodes: number[]) => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    console.log('Hook 1 called');
     let isMounted = true;
     const controller = new AbortController();
-    const signal = controller.signal;
 
-    const fetchSequentially = async () => {
+    const fetchSequentiallyForType = async () => {
       setIsLoading(true);
       setIsError(false);
+      setCombinedData([]); // Clear graph to avoid showing old data
 
-      // Keep already fetched data and only fetch new prefectures
-      const alreadyFetched = new Set(combinedData.map((d) => d.prefCode));
-      const newPrefCodes = prefCodes.filter(
-        (code) => !alreadyFetched.has(code)
-      );
-
-      for (const code of newPrefCodes) {
+      for (const code of prefCodes) {
         try {
-          const data = await fetchAndCachePrefecture(code);
-          if (isMounted) {
-            setCombinedData((prevData) => [...prevData, data]);
+          const fullData = await fetchAndCachePrefecture(code);
+          const relevantData = fullData[populationType];
+
+          if (isMounted && relevantData) {
+            setCombinedData((prevData) => [
+              ...prevData,
+              { prefCode: code, data: relevantData },
+            ]);
           }
         } catch (error) {
           //if (error.name !== 'AbortError' && isMounted) {
@@ -58,8 +75,46 @@ export const usePopulationData = (prefCodes: number[]) => {
         }
       }
 
-      if (isMounted) {
-        setIsLoading(false);
+      if (isMounted) setIsLoading(false);
+    };
+
+    fetchSequentiallyForType();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [populationType, prefCodes]);
+
+  useEffect(() => {
+    console.log('Hook 2 called');
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const fetchSequentially = async () => {
+      // Keep already fetched data and only fetch new prefectures
+      const alreadyFetched = new Set(combinedData.map((d) => d.prefCode));
+      const newPrefCodes = prefCodes.filter(
+        (code) => !alreadyFetched.has(code)
+      );
+
+      for (const code of newPrefCodes) {
+        try {
+          const fullData = await fetchAndCachePrefecture(code);
+          const relevantData = fullData[populationType];
+
+          if (isMounted && relevantData) {
+            setCombinedData((prevData) => [
+              ...prevData,
+              { prefCode: code, data: relevantData },
+            ]);
+          }
+        } catch (error) {
+          //if (error.name !== 'AbortError' && isMounted) {
+          console.log(error);
+          setIsError(true);
+          //}
+        }
       }
     };
 
@@ -85,8 +140,6 @@ export const usePopulationData = (prefCodes: number[]) => {
 const combinePopulationData = (
   responses: { prefCode: number; data: ChartPopulationData }[]
 ) => {
-  console.log(responses); // Full response structure
-
   const boundaryYears: { [key: string]: number } = {};
   const combinedPopulationData: { year: number; [key: string]: number }[] = [];
 

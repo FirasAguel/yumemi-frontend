@@ -19,7 +19,10 @@ export default function PopulationChart({
   selectedPrefectures: number[];
   populationType: string;
 }) {
-  const { data, isLoading, isError } = usePopulationData(selectedPrefectures);
+  const { data, isLoading, isError } = usePopulationData(
+    selectedPrefectures,
+    populationType
+  );
 
   if (isLoading && (!data || data.populationData.length === 0))
     return <p>Loading...</p>;
