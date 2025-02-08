@@ -60,21 +60,52 @@ export default function PrefectureSelector({
   // As part of this refactor, implement shift-click support on <label> to ensure consistent selection
   // behavior when clicking either the checkbox or the label.
 
+  const populationTypes = [
+    { value: 'total', label: '総人口' },
+    { value: 'young', label: '年少人口' },
+    { value: 'working', label: '生産年齢人口' },
+    { value: 'elderly', label: '老年人口' },
+  ];
+  const [selectedPopulationType, setSelectedPopulationType] = useState('total');
+
+  const handlePopulationTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const newType = event.target.value;
+    setSelectedPopulationType(newType);
+  };
+
   return (
-    <>
+    <div className="flex flex-col items-center">
       <div className="flex space-x-4 mb-4">
         <button
           onClick={selectAll}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          className="px-4 py-2 h-min my-auto bg-blue-500 text-white rounded"
         >
           Select All
         </button>
         <button
           onClick={deselectAll}
-          className="px-4 py-2 bg-red-500 text-white rounded"
+          className="px-4 py-2 h-min my-auto bg-red-500 text-white rounded"
         >
           Deselect All
         </button>
+        <div>
+          <label className="block mb-2 text-sm font-medium">
+            Population Type
+          </label>
+          <select
+            value={selectedPopulationType}
+            onChange={handlePopulationTypeChange}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          >
+            {populationTypes.map((type) => (
+              <option key={type.value} value={type.value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="flex flex-wrap w-108 space-x-2">
         {prefectures.map((prefecture) => (
@@ -92,6 +123,6 @@ export default function PrefectureSelector({
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
