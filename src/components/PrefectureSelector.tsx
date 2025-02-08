@@ -5,10 +5,14 @@ export default function PrefectureSelector({
   prefectures,
   selectedPrefectures,
   onSelectionChange,
+  selectedPopulationType,
+  onPopulationTypeChange,
 }: {
   prefectures: Prefecture[];
   selectedPrefectures: number[];
   onSelectionChange: (selected: number[]) => void;
+  selectedPopulationType: string;
+  onPopulationTypeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }) {
   const selectAll = () => {
     const allPrefCodes = prefectures.map((pref) => pref.prefCode);
@@ -66,14 +70,6 @@ export default function PrefectureSelector({
     { value: 'working', label: '生産年齢人口' },
     { value: 'elderly', label: '老年人口' },
   ];
-  const [selectedPopulationType, setSelectedPopulationType] = useState('total');
-
-  const handlePopulationTypeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const newType = event.target.value;
-    setSelectedPopulationType(newType);
-  };
 
   return (
     <div className="flex flex-col items-center">
@@ -96,7 +92,7 @@ export default function PrefectureSelector({
           </label>
           <select
             value={selectedPopulationType}
-            onChange={handlePopulationTypeChange}
+            onChange={onPopulationTypeChange}
             className="w-full p-2 border border-gray-300 rounded-md"
           >
             {populationTypes.map((type) => (
