@@ -1,22 +1,25 @@
-import { mutate } from 'swr';
-import { getPopulation } from '@/services/api';
-import { ChartPopulationData } from '@/types/interfaces';
+'use client';
 import { useState, useEffect, useRef } from 'react';
+import { getPopulation } from '@/services/api';
+import { ChartPopulationData, FullPopulationData } from '@/types/interfaces';
 
-// Function to fetch and cache prefecture data without using hooks
-export const fetchAndCachePrefecture = async (prefCode: number) => {
-  const key = ['population', prefCode];
+// Module level custom cache
+const populationCache = new Map<
+  number,
+  { [key: string]: ChartPopulationData }
+>();
 
-  // Check if data is already cached via mutate with revalidation set to false
-  const cachedData = await mutate(key, undefined, false); // false prevents revalidation
-  if (cachedData) {
-    return cachedData; // Return cached data if available
+export const fetchAndCachePrefecture = async (
+  prefCode: number
+): Promise<{ [key: string]: ChartPopulationData }> => {
+  console.log(populationCache);
+  if (populationCache.has(prefCode)) {
+    return populationCache.get(prefCode)!;
   }
 
   // Fetch if data isn't cached
-  const data = await getPopulation(prefCode);
+  const data: FullPopulationData = await getPopulation(prefCode);
 
-  // Transform all population types during caching
   const transformedData = data.populationData.reduce(
     (acc: { [key: string]: ChartPopulationData }, item) => {
       acc[item.label] = {
@@ -32,7 +35,7 @@ export const fetchAndCachePrefecture = async (prefCode: number) => {
   );
 
   // Cache the fetched data
-  mutate(key, transformedData, false);
+  populationCache.set(prefCode, transformedData);
   return transformedData;
 };
 
@@ -43,11 +46,11 @@ export const usePopulationData = (
   const [combinedData, setCombinedData] = useState<
     { prefCode: number; data: ChartPopulationData }[]
   >([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const previousType = useRef<string | null>(null);
 
-  let previousType = useRef<string | null>(null);
-
+  // Effect for handling changes in populationType
   useEffect(() => {
     if (prefCodes.length === 0) return;
 
@@ -93,6 +96,7 @@ export const usePopulationData = (
     };
   }, [populationType, prefCodes]);
 
+  // Effect for handling the addition of new prefectures without changing populationType.
   useEffect(() => {
     if (prefCodes.length === 0) return;
 
