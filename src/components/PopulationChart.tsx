@@ -57,7 +57,7 @@ export default function PopulationChart({
                 dashedData.push(entry);
               }
             }
-            const duration = 1500;
+            const duration = Math.random() * 600 + 900;
             return [
               <Line
                 key={`${prefCode}-solid`}
