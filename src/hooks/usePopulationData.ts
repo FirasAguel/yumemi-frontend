@@ -49,6 +49,8 @@ export const usePopulationData = (
   let previousType = useRef<string | null>(null);
 
   useEffect(() => {
+    if (prefCodes.length === 0) return;
+
     if (previousType.current === populationType) return; // Skip if populationType hasn’t changed
     previousType.current = populationType; // Update the stored type
 
@@ -92,6 +94,8 @@ export const usePopulationData = (
   }, [populationType, prefCodes]);
 
   useEffect(() => {
+    if (prefCodes.length === 0) return;
+
     console.log('Hook 2 called');
     let isMounted = true;
     const controller = new AbortController();
