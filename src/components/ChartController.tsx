@@ -10,7 +10,8 @@ export default function ChartController({
   prefectures: Prefecture[];
 }) {
   const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
-  const [selectedPopulationType, setSelectedPopulationType] = useState('total');
+  const [selectedPopulationType, setSelectedPopulationType] =
+    useState('総人口');
 
   const handlePopulationTypeChange = (
     event: React.ChangeEvent<HTMLSelectElement>
