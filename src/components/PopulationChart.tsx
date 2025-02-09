@@ -147,6 +147,21 @@ export default function PopulationChart({
     return pref ? pref.prefName : key;
   };
 
+  const colorPalette = [
+    '#377eb8', // Blue
+    '#e41a1c', // Red
+    '#4daf4a', // Green
+    '#ff7f00', // Orange
+    '#984ea3', // Purple
+    '#a65628', // Brown
+    '#f781bf', // Pink
+    '#999999', // Gray
+    '#66c2a5', // Teal
+    '#fc8d62', // Coral
+  ];
+
+  const getColor = (index: number) => colorPalette[index % colorPalette.length];
+
   return (
     <>
       {/*md: or higher*/}
@@ -188,7 +203,11 @@ export default function PopulationChart({
                   type="monotone"
                   dataKey={prefCode}
                   data={solidData}
-                  stroke="#8884d8"
+                  stroke={getColor(
+                    selectedPrefectures.indexOf(
+                      parseInt(prefCode.replace('Pref-', ''))
+                    )
+                  )}
                   strokeDasharray="0"
                   isAnimationActive={true}
                   animationDuration={duration}
@@ -201,7 +220,11 @@ export default function PopulationChart({
                   type="monotone"
                   dataKey={prefCode}
                   data={dashedData}
-                  stroke="#8884d8"
+                  stroke={getColor(
+                    selectedPrefectures.indexOf(
+                      parseInt(prefCode.replace('Pref-', ''))
+                    )
+                  )}
                   strokeDasharray="3 3"
                   legendType="none"
                   isAnimationActive={true}
@@ -261,7 +284,11 @@ export default function PopulationChart({
                   type="monotone"
                   dataKey={prefCode}
                   data={solidData}
-                  stroke="#8884d8"
+                  stroke={getColor(
+                    selectedPrefectures.indexOf(
+                      parseInt(prefCode.replace('Pref-', ''))
+                    )
+                  )}
                   strokeDasharray="0"
                   isAnimationActive={true}
                   animationDuration={duration}
@@ -274,7 +301,11 @@ export default function PopulationChart({
                   type="monotone"
                   dataKey={prefCode}
                   data={dashedData}
-                  stroke="#8884d8"
+                  stroke={getColor(
+                    selectedPrefectures.indexOf(
+                      parseInt(prefCode.replace('Pref-', ''))
+                    )
+                  )}
                   strokeDasharray="3 3"
                   legendType="none"
                   isAnimationActive={true}
