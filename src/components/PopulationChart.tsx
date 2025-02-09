@@ -122,77 +122,158 @@ export default function PopulationChart({
     return tick > 10000 ? (tick / 10000).toString() + '万' : tick;
   };
 
+  const getLegendProps = () => {
+    return {
+      content: <CustomLegend />,
+      height: 1,
+      wrapperStyle: {
+        position: 'absolute',
+        maxWidth: '100px',
+        minHeight: `${legendHeight}px`,
+        right: 0,
+        top: `${legendHeight / 2}px`,
+        transform: 'translateY(-50%)',
+        textAlign: 'left',
+      },
+    };
+  };
+
   return (
-    <ResponsiveContainer width="100%" height={500}>
-      <LineChart
-        data={populationData}
-        margin={{ top: 20, right: 120, left: 0, bottom: -legendHeight }}
+    <>
+      {/*md: or higher*/}
+      <ResponsiveContainer
+        width="100%"
+        height={500}
+        className="hidden md:block"
       >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
-        <YAxis tickFormatter={(tick) => formatYAxis(tick)} />
-        <Tooltip />
-        <Legend
-          content={<CustomLegend />}
-          height={1}
-          wrapperStyle={{
-            position: 'absolute',
-            maxWidth: '100px',
-            minHeight: `${legendHeight}px`,
-            right: 0,
-            top: `${legendHeight / 2}px`,
-            transform: 'translateY(-50%)',
-            textAlign: 'left',
-          }}
-        />
-        {Object.keys(populationData[0] || {})
-          .filter((key) => key !== 'year')
-          .flatMap((prefCode) => {
-            const solidData = [];
-            const dashedData = [];
-            for (const entry of populationData) {
-              if (entry.year < boundaryYears[prefCode]) {
-                solidData.push(entry);
-              } else if (entry.year > boundaryYears[prefCode]) {
-                dashedData.push(entry);
-              } else {
-                solidData.push(entry);
-                dashedData.push(entry);
+        <LineChart
+          data={populationData}
+          margin={{ top: 20, right: 120, left: 0, bottom: -legendHeight }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
+          <YAxis tickFormatter={(tick) => formatYAxis(tick)} />
+          <Tooltip />
+          <Legend {...getLegendProps()} />
+          {Object.keys(populationData[0] || {})
+            .filter((key) => key !== 'year')
+            .flatMap((prefCode) => {
+              const solidData = [];
+              const dashedData = [];
+              for (const entry of populationData) {
+                if (entry.year < boundaryYears[prefCode]) {
+                  solidData.push(entry);
+                } else if (entry.year > boundaryYears[prefCode]) {
+                  dashedData.push(entry);
+                } else {
+                  solidData.push(entry);
+                  dashedData.push(entry);
+                }
               }
-            }
-            const duration = Math.random() * 600 + 900;
-            return [
-              <Line
-                key={`${prefCode}-solid`}
-                type="monotone"
-                dataKey={prefCode}
-                data={solidData}
-                stroke="#8884d8"
-                strokeDasharray="0"
-                isAnimationActive={true}
-                animationDuration={duration}
-                animationEasing="linear"
-                dot={false}
-                activeDot={false}
-              />,
-              <Line
-                key={`${prefCode}-dashed`}
-                type="monotone"
-                dataKey={prefCode}
-                data={dashedData}
-                stroke="#8884d8"
-                strokeDasharray="3 3"
-                legendType="none"
-                isAnimationActive={true}
-                animationBegin={duration}
-                animationEasing="linear"
-                tooltipType="none"
-                dot={false}
-                activeDot={false}
-              />,
-            ];
-          })}
-      </LineChart>
-    </ResponsiveContainer>
+              const duration = Math.random() * 600 + 900;
+              return [
+                <Line
+                  key={`${prefCode}-solid`}
+                  type="monotone"
+                  dataKey={prefCode}
+                  data={solidData}
+                  stroke="#8884d8"
+                  strokeDasharray="0"
+                  isAnimationActive={true}
+                  animationDuration={duration}
+                  animationEasing="linear"
+                  dot={false}
+                  activeDot={false}
+                />,
+                <Line
+                  key={`${prefCode}-dashed`}
+                  type="monotone"
+                  dataKey={prefCode}
+                  data={dashedData}
+                  stroke="#8884d8"
+                  strokeDasharray="3 3"
+                  legendType="none"
+                  isAnimationActive={true}
+                  animationBegin={duration}
+                  animationEasing="linear"
+                  tooltipType="none"
+                  dot={false}
+                  activeDot={false}
+                />,
+              ];
+            })}
+        </LineChart>
+      </ResponsiveContainer>
+      {/*lower than md*/}
+      <ResponsiveContainer
+        width="100%"
+        height={500}
+        className="block md:hidden"
+      >
+        <LineChart
+          data={populationData}
+          margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
+          <YAxis tickFormatter={(tick) => formatYAxis(tick)} />
+          <Tooltip />
+          <Legend
+            verticalAlign="bottom"
+            align="center"
+            wrapperStyle={{
+              paddingTop: '10px',
+            }}
+          />
+          {Object.keys(populationData[0] || {})
+            .filter((key) => key !== 'year')
+            .flatMap((prefCode) => {
+              const solidData = [];
+              const dashedData = [];
+              for (const entry of populationData) {
+                if (entry.year < boundaryYears[prefCode]) {
+                  solidData.push(entry);
+                } else if (entry.year > boundaryYears[prefCode]) {
+                  dashedData.push(entry);
+                } else {
+                  solidData.push(entry);
+                  dashedData.push(entry);
+                }
+              }
+              const duration = Math.random() * 600 + 900;
+              return [
+                <Line
+                  key={`${prefCode}-solid`}
+                  type="monotone"
+                  dataKey={prefCode}
+                  data={solidData}
+                  stroke="#8884d8"
+                  strokeDasharray="0"
+                  isAnimationActive={true}
+                  animationDuration={duration}
+                  animationEasing="linear"
+                  dot={false}
+                  activeDot={false}
+                />,
+                <Line
+                  key={`${prefCode}-dashed`}
+                  type="monotone"
+                  dataKey={prefCode}
+                  data={dashedData}
+                  stroke="#8884d8"
+                  strokeDasharray="3 3"
+                  legendType="none"
+                  isAnimationActive={true}
+                  animationBegin={duration}
+                  animationEasing="linear"
+                  tooltipType="none"
+                  dot={false}
+                  activeDot={false}
+                />,
+              ];
+            })}
+        </LineChart>
+      </ResponsiveContainer>
+    </>
   );
 }
