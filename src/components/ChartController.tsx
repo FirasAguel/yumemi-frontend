@@ -19,15 +19,17 @@ export default function ChartController({
     setSelectedPopulationType(event.target.value);
   };
   return (
-    <div className="flex flex-1 flex-col items-center justify-center w-full">
-      <PrefectureSelector
-        prefectures={prefectures}
-        selectedPrefectures={selectedPrefectures}
-        onSelectionChange={setSelectedPrefectures}
-        selectedPopulationType={selectedPopulationType}
-        onPopulationTypeChange={handlePopulationTypeChange}
-      />
-      <div className="w-1/2 max-w-4xl h-auto p-4">
+    <div className="flex flex-wrap lg:flex-nowrap items-center justify-center w-full p-4 space-y-4 lg:space-y-0">
+      <div className="w-full lg:w-1/3 lg:max-w-md flex-shrink-0 ml-4">
+        <PrefectureSelector
+          prefectures={prefectures}
+          selectedPrefectures={selectedPrefectures}
+          onSelectionChange={setSelectedPrefectures}
+          selectedPopulationType={selectedPopulationType}
+          onPopulationTypeChange={handlePopulationTypeChange}
+        />
+      </div>
+      <div className="flex-1 w-1/2 h-auto p-4">
         <h2>人口構成グラフ</h2>
         <PopulationChart
           selectedPrefectures={selectedPrefectures}
