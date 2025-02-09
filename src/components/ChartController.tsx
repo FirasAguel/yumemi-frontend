@@ -20,7 +20,7 @@ export default function ChartController({
   };
   return (
     <div className="flex flex-wrap lg:flex-nowrap items-center justify-center w-full p-4 space-y-4 lg:space-y-0">
-      <div className="w-full lg:w-1/3 lg:max-w-md flex-shrink-0 ml-4">
+      <div className="w-fit lg:max-w-md flex-shrink-0 ml-4">
         <PrefectureSelector
           prefectures={prefectures}
           selectedPrefectures={selectedPrefectures}
