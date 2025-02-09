@@ -126,7 +126,7 @@ export default function PopulationChart({
     <ResponsiveContainer width="100%" height={500}>
       <LineChart
         data={populationData}
-        margin={{ top: 20, right: 120, left: 20, bottom: -legendHeight }}
+        margin={{ top: 20, right: 120, left: 0, bottom: -legendHeight }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />

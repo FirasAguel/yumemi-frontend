@@ -29,7 +29,7 @@ export default function ChartController({
           onPopulationTypeChange={handlePopulationTypeChange}
         />
       </div>
-      <div className="flex-1 w-1/2 h-auto p-4">
+      <div className="flex-1 w-1/2 h-auto pr-4">
         <h2>人口構成グラフ</h2>
         <PopulationChart
           selectedPrefectures={selectedPrefectures}
