@@ -12,11 +12,14 @@ import {
 
 import { usePopulationData } from '@/hooks/usePopulationData';
 import { useRef, useEffect, useState } from 'react';
+import { Prefecture } from '@/types/interfaces';
 
 export default function PopulationChart({
+  prefectures,
   selectedPrefectures,
   populationType,
 }: {
+  prefectures: Prefecture[];
   selectedPrefectures: number[];
   populationType: string;
 }) {
@@ -84,7 +87,7 @@ export default function PopulationChart({
 
     return (
       <div
-        className="space-y-2 flex flex-wrap justify-between px-3 overflow-y-scroll hide-scrollbar h-[500px] py-50 pl-2"
+        className="space-y-2 flex flex-wrap justify-between overflow-y-scroll hide-scrollbar h-[500px] py-50 pr-2 pl-2 lg:pr-4"
         ref={containerRef}
       >
         <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-white via-white/90 to-transparent pointer-events-none" />
@@ -94,7 +97,7 @@ export default function PopulationChart({
           .map((entry, index) => (
             <div
               key={`item-${entry.value}`}
-              className="flex items-center text-sm w-20"
+              className="flex items-center text-lg min-w-25"
             >
               <span
                 className="inline-block w-3 h-0.5 mr-0.5"
@@ -108,7 +111,7 @@ export default function PopulationChart({
                 className="inline-block w-0.5 h-0.5 mr-2"
                 style={{ backgroundColor: entry.color }}
               ></span>
-              {entry.value}
+              {getPrefectureName(entry.value)}
             </div>
           ))}
         <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-white via-white/90 to-transparent pointer-events-none" />
@@ -128,7 +131,7 @@ export default function PopulationChart({
       height: 1,
       wrapperStyle: {
         position: 'absolute',
-        maxWidth: '100px',
+        maxWidth: '120px',
         minHeight: `${legendHeight}px`,
         right: 0,
         top: `${legendHeight / 2}px`,
@@ -136,6 +139,12 @@ export default function PopulationChart({
         textAlign: 'left',
       },
     };
+  };
+
+  const getPrefectureName = (key: string) => {
+    const code = parseInt(key.replace('Pref-', ''), 10);
+    const pref = prefectures.find((p) => p.prefCode === code);
+    return pref ? pref.prefName : key;
   };
 
   return (
@@ -148,12 +157,14 @@ export default function PopulationChart({
       >
         <LineChart
           data={populationData}
-          margin={{ top: 20, right: 120, left: 0, bottom: -legendHeight }}
+          margin={{ top: 20, right: 128, left: 0, bottom: -legendHeight }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
           <YAxis tickFormatter={(tick) => formatYAxis(tick)} />
-          <Tooltip />
+          <Tooltip
+            formatter={(value, name) => [value, getPrefectureName(name)]}
+          />
           <Legend {...getLegendProps()} />
           {Object.keys(populationData[0] || {})
             .filter((key) => key !== 'year')
@@ -217,13 +228,16 @@ export default function PopulationChart({
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
           <YAxis tickFormatter={(tick) => formatYAxis(tick)} />
-          <Tooltip />
+          <Tooltip
+            formatter={(value, name) => [value, getPrefectureName(name)]}
+          />
           <Legend
             verticalAlign="bottom"
             align="center"
             wrapperStyle={{
               paddingTop: '10px',
             }}
+            formatter={(value, name) => [getPrefectureName(name.dataKey)]}
           />
           {Object.keys(populationData[0] || {})
             .filter((key) => key !== 'year')
