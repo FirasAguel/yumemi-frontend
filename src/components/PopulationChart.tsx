@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 
 import { usePopulationData } from '@/hooks/usePopulationData';
+import { useRef, useEffect, useState } from 'react';
 
 export default function PopulationChart({
   selectedPrefectures,
@@ -33,10 +34,61 @@ export default function PopulationChart({
 
   const CustomLegend = (props) => {
     const { payload } = props;
+    const containerRef = useRef(null);
+    const [scrollingDown, setScrollingDown] = useState(true);
+
+    useEffect(() => {
+      const scrollContainer = containerRef.current;
+      if (!scrollContainer) return;
+
+      if (selectedPrefectures.length < 8) return;
+
+      const scrollStep = 1;
+      const intervalTime = 58 - selectedPrefectures.length;
+      let interval;
+
+      const startScrolling = () => {
+        interval = setInterval(() => {
+          if (scrollingDown) {
+            scrollContainer.scrollTop += scrollStep;
+            if (
+              scrollContainer.scrollTop + scrollContainer.clientHeight >=
+              scrollContainer.scrollHeight
+            ) {
+              setScrollingDown(false);
+            }
+          } else {
+            scrollContainer.scrollTop -= scrollStep;
+            if (scrollContainer.scrollTop <= 0) {
+              setScrollingDown(true);
+            }
+          }
+        }, intervalTime);
+      };
+
+      startScrolling();
+
+      const stopAutoScroll = () => {
+        clearInterval(interval);
+      };
+
+      scrollContainer.addEventListener('mouseenter', stopAutoScroll);
+      scrollContainer.addEventListener('mouseleave', startScrolling);
+
+      return () => {
+        scrollContainer.removeEventListener('mouseenter', stopAutoScroll);
+        scrollContainer.removeEventListener('mouseleave', startScrolling);
+        stopAutoScroll();
+      };
+    }, [scrollingDown]);
+
     return (
-      <div className="space-y-2 flex flex-wrap justify-between px-3 overflow-y-scroll hide-scrollbar h-[500px] py-60">
+      <div
+        className="space-y-2 flex flex-wrap justify-between px-3 overflow-y-scroll hide-scrollbar h-[500px] py-50 pl-2"
+        ref={containerRef}
+      >
         <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-white via-white/90 to-transparent pointer-events-none" />
-        <div className="absolute top-0 right-0 w-0.5 h-full bg-gradient-to-b from-white via-gray-400 to-white pointer-events-none" />
+        <div className="absolute top-0 right-0 w-0.5 h-full bg-gradient-to-b from-white via-gray-300 to-white pointer-events-none" />
         {payload
           .filter((entry) => entry.payload.legendType !== 'none')
           .map((entry, index) => (
