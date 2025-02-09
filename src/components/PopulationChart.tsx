@@ -118,6 +118,10 @@ export default function PopulationChart({
   const legendHeight = 500;
   const legendWidth = 160;
 
+  const formatYAxis = (tick) => {
+    return tick > 10000 ? (tick / 10000).toString() + '万' : tick;
+  };
+
   return (
     <ResponsiveContainer width="100%" height={500}>
       <LineChart
@@ -126,7 +130,7 @@ export default function PopulationChart({
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
-        <YAxis />
+        <YAxis tickFormatter={(tick) => formatYAxis(tick)} />
         <Tooltip />
         <Legend
           content={<CustomLegend />}
