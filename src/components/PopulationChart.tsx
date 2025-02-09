@@ -31,17 +31,64 @@ export default function PopulationChart({
   const populationData = data?.populationData || [];
   const boundaryYears = data?.boundaryYears || {};
 
+  const CustomLegend = (props) => {
+    const { payload } = props;
+    return (
+      <div className="space-y-2 flex flex-wrap justify-between px-3 overflow-y-scroll hide-scrollbar h-[500px] py-60">
+        <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-white via-white/90 to-transparent pointer-events-none" />
+        <div className="absolute top-0 right-0 w-0.5 h-full bg-gradient-to-b from-white via-gray-400 to-white pointer-events-none" />
+        {payload
+          .filter((entry) => entry.payload.legendType !== 'none')
+          .map((entry, index) => (
+            <div
+              key={`item-${entry.value}`}
+              className="flex items-center text-sm w-20"
+            >
+              <span
+                className="inline-block w-3 h-0.5 mr-0.5"
+                style={{ backgroundColor: entry.color }}
+              ></span>
+              <span
+                className="inline-block w-0.5 h-0.5 mr-0.5"
+                style={{ backgroundColor: entry.color }}
+              ></span>
+              <span
+                className="inline-block w-0.5 h-0.5 mr-2"
+                style={{ backgroundColor: entry.color }}
+              ></span>
+              {entry.value}
+            </div>
+          ))}
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-white via-white/90 to-transparent pointer-events-none" />
+      </div>
+    );
+  };
+  const legendHeight = 500;
+  const legendWidth = 160;
+
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={500}>
       <LineChart
         data={populationData}
-        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        margin={{ top: 20, right: 120, left: 20, bottom: -legendHeight }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
         <YAxis />
         <Tooltip />
-        <Legend />
+        <Legend
+          content={<CustomLegend />}
+          height={1}
+          wrapperStyle={{
+            position: 'absolute',
+            maxWidth: '100px',
+            minHeight: `${legendHeight}px`,
+            right: 0,
+            top: `${legendHeight / 2}px`,
+            transform: 'translateY(-50%)',
+            textAlign: 'left',
+          }}
+        />
         {Object.keys(populationData[0] || {})
           .filter((key) => key !== 'year')
           .flatMap((prefCode) => {
