@@ -138,7 +138,7 @@ export const usePopulationData = (
       isMounted = false;
       controller.abort();
     };
-  }, [prefCodes]);
+  }, [populationType, combinedData, prefCodes]);
 
   // Filter combined data to match selected prefectures (handles deselection)
   const filteredData = combinedData.filter((d) =>
