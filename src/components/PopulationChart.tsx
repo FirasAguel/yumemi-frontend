@@ -64,7 +64,7 @@ export default function PopulationChart({
 
       const scrollStep = 1;
       const intervalTime = 58 - selectedPrefectures.length;
-      let interval;
+      let interval: ReturnType<typeof setInterval>;
 
       const startScrolling = () => {
         interval = setInterval(() => {
