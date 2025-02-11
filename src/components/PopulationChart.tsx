@@ -173,7 +173,13 @@ export default function PopulationChart({
     };
   };
 
-  const getPrefectureName = (key: string) => {
+  // getPrefectureName now accepts a non-undefined key.
+  const getPrefectureName = (key: string | number): string => {
+    if (typeof key === 'number') {
+      const pref = prefectures.find((p) => p.prefCode === key);
+      return pref ? pref.prefName : String(key);
+    }
+    // Assume the key is in the format 'Pref-<code>'
     const code = parseInt(key.replace('Pref-', ''), 10);
     const pref = prefectures.find((p) => p.prefCode === code);
     return pref ? pref.prefName : key;
@@ -292,7 +298,7 @@ export default function PopulationChart({
             wrapperStyle={{
               paddingTop: '10px',
             }}
-            formatter={(value, name) => [getPrefectureName(name.dataKey)]}
+            formatter={(value) => [getPrefectureName(value)]}
           />
           {Object.keys(populationData[0] || {})
             .filter((key) => key !== 'year')
