@@ -108,6 +108,7 @@ export default function PopulationChart({
       >
         <div className="pointer-events-none absolute top-0 left-0 h-40 w-full bg-gradient-to-b from-white via-white/90 to-transparent" />
         <div className="pointer-events-none absolute top-0 right-0 h-full w-0.5 bg-gradient-to-b from-white via-gray-300 to-white" />
+
         {payload
           // Check that payload exists before accessing legendType.
           .filter((entry: CustomLegendItem) =>
@@ -130,7 +131,7 @@ export default function PopulationChart({
                 className="mr-2 inline-block h-0.5 w-0.5"
                 style={{ backgroundColor: entry.color }}
               ></span>
-              {getPrefectureName(entry.value)}
+              {entry.value !== undefined ? getPrefectureName(entry.value) : ''}
             </div>
           ))}
         <div className="pointer-events-none absolute bottom-0 left-0 h-40 w-full bg-linear-to-t from-white via-white/90 to-transparent" />
