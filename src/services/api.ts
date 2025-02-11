@@ -10,6 +10,8 @@ export async function getPrefectures(): Promise<Prefecture[]> {
       headers: {
         'X-API-KEY': process.env.X_API_KEY || '',
       },
+      cache: 'force-cache',
+      next: { revalidate: 86400 }, // cache for 24 hours
     }
   );
 
@@ -36,6 +38,8 @@ export async function getPopulation(
       headers: {
         'X-API-KEY': process.env.X_API_KEY || '',
       },
+      cache: 'force-cache',
+      next: { revalidate: 3600 }, // cache for 1 hour
     }
   );
 
