@@ -1,5 +1,7 @@
+'use client';
 import { Prefecture } from '@/types/interfaces';
 import { useState } from 'react';
+import PrefectureCheckbox from './PrefectureCheckbox';
 
 export default function PrefectureSelector({
   prefectures,
@@ -60,10 +62,6 @@ export default function PrefectureSelector({
     setLastClickedPrefCode(prefCode);
   };
 
-  // TODO: Refactor checkbox + label elements into a separate React component (PrefectureCheckbox).
-  // As part of this refactor, implement shift-click support on <label> to ensure consistent selection
-  // behavior when clicking either the checkbox or the label.
-
   const populationTypes = [
     { value: '総人口', label: '総人口' },
     { value: '年少人口', label: '年少人口' },
@@ -72,28 +70,28 @@ export default function PrefectureSelector({
   ];
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex space-x-4 mb-4">
+    <div className="flex w-fit flex-col items-start">
+      <div className="flex flex-wrap gap-2">
         <button
           onClick={selectAll}
-          className="px-4 py-2 h-min my-auto bg-blue-500 text-white rounded"
+          className="my-auto mb-2 h-min rounded bg-blue-500 px-4 py-2 text-white"
         >
           Select All
         </button>
         <button
           onClick={deselectAll}
-          className="px-4 py-2 h-min my-auto bg-red-500 text-white rounded"
+          className="my-auto mb-2 h-min rounded bg-red-500 px-4 py-2 text-white"
         >
           Deselect All
         </button>
-        <div>
-          <label className="block mb-2 text-sm font-medium">
+        <div className="py-2">
+          <label className="mb-1 block text-sm font-medium">
             Population Type
           </label>
           <select
             value={selectedPopulationType}
             onChange={onPopulationTypeChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full rounded-md border border-gray-300 p-1"
           >
             {populationTypes.map((type) => (
               <option key={type.value} value={type.value}>
@@ -103,20 +101,15 @@ export default function PrefectureSelector({
           </select>
         </div>
       </div>
-      <div className="flex flex-wrap w-108 space-x-2">
+      <div className="flex max-w-104 flex-wrap gap-1">
         {prefectures.map((prefecture) => (
-          <div key={prefecture.prefCode} className="flex space-x-2 w-25">
-            <input
-              type="checkbox"
-              id={`pref-${prefecture.prefCode}`}
-              checked={selectedPrefectures.includes(prefecture.prefCode)}
-              onClick={(e) => handleCheckboxClick(prefecture.prefCode, e)}
-              onChange={() => {}} // Dummy handler for React warnings
-            ></input>
-            <label htmlFor={`pref-${prefecture.prefCode}`}>
-              {prefecture.prefName}
-            </label>
-          </div>
+          <PrefectureCheckbox
+            key={prefecture.prefCode}
+            prefCode={prefecture.prefCode}
+            prefName={prefecture.prefName}
+            checked={selectedPrefectures.includes(prefecture.prefCode)}
+            onCheckboxClick={handleCheckboxClick}
+          />
         ))}
       </div>
     </div>
