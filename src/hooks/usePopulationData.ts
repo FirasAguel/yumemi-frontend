@@ -19,6 +19,7 @@ export const fetchAndCachePrefecture = async (
 
   // Fetch if data isn't cached
   const data: FullPopulationData = await getPopulation(prefCode);
+  console.log({ prefCode, data });
 
   const transformedData = data.populationData.reduce(
     (acc: { [key: string]: ChartPopulationData }, item) => {
@@ -138,7 +139,7 @@ export const usePopulationData = (
       isMounted = false;
       controller.abort();
     };
-  }, [populationType, combinedData, prefCodes]);
+  }, [populationType, prefCodes]);
 
   // Filter combined data to match selected prefectures (handles deselection)
   const filteredData = combinedData.filter((d) =>
