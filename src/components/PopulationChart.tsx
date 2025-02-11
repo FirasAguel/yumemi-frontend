@@ -11,7 +11,6 @@ import {
 } from 'recharts';
 
 import { usePopulationData } from '@/hooks/usePopulationData';
-import { useRef, useEffect, useState } from 'react';
 import { Prefecture } from '@/types/interfaces';
 import CustomLegend from './CustomLegend';
 
@@ -48,10 +47,9 @@ export default function PopulationChart({
     return pref ? pref.prefName : key;
   };
 
-  // Ensure tick formatter always returns a string.
-  const formatYAxis = (tick: number): string => {
-    return tick > 10000 ? (tick / 10000).toString() + '万' : tick.toString();
-  };
+  // Format Y-axis ticks.
+  const formatYAxis = (tick: number): string =>
+    tick > 10000 ? (tick / 10000).toString() + '万' : tick.toString();
 
   // Define the style type for the legend wrapper.
   interface LegendWrapperStyle {
@@ -75,18 +73,16 @@ export default function PopulationChart({
     textAlign: 'left',
   };
 
-  const getLegendProps = () => {
-    return {
-      content: (
-        <CustomLegend
-          selectedPrefectures={selectedPrefectures}
-          getPrefectureName={getPrefectureName}
-        />
-      ),
-      height: 1,
-      wrapperStyle: legendWrapperStyle,
-    };
-  };
+  const getLegendProps = () => ({
+    content: (
+      <CustomLegend
+        selectedPrefectures={selectedPrefectures}
+        getPrefectureName={getPrefectureName}
+      />
+    ),
+    height: 1,
+    wrapperStyle: legendWrapperStyle,
+  });
 
   const colorPalette = [
     '#377eb8', // Blue
@@ -103,6 +99,60 @@ export default function PopulationChart({
 
   const getColor = (index: number) => colorPalette[index % colorPalette.length];
 
+  // Helper to render all Line elements.
+  const renderChartLines = () => {
+    return Object.keys(populationData[0] || {})
+      .filter((key) => key !== 'year')
+      .flatMap((prefCode) => {
+        const solidData = [];
+        const dashedData = [];
+        for (const entry of populationData) {
+          if (entry.year < boundaryYears[prefCode]) {
+            solidData.push(entry);
+          } else if (entry.year > boundaryYears[prefCode]) {
+            dashedData.push(entry);
+          } else {
+            solidData.push(entry);
+            dashedData.push(entry);
+          }
+        }
+        const duration = Math.random() * 600 + 900;
+        const color = getColor(
+          selectedPrefectures.indexOf(parseInt(prefCode.replace('Pref-', '')))
+        );
+        return [
+          <Line
+            key={`${prefCode}-solid`}
+            type="monotone"
+            dataKey={prefCode}
+            data={solidData}
+            stroke={color}
+            strokeDasharray="0"
+            isAnimationActive={true}
+            animationDuration={duration}
+            animationEasing="linear"
+            dot={false}
+            activeDot={false}
+          />,
+          <Line
+            key={`${prefCode}-dashed`}
+            type="monotone"
+            dataKey={prefCode}
+            data={dashedData}
+            stroke={color}
+            strokeDasharray="3 3"
+            legendType="none"
+            isAnimationActive={true}
+            animationBegin={duration}
+            animationEasing="linear"
+            tooltipType="none"
+            dot={false}
+            activeDot={false}
+          />,
+        ];
+      });
+  };
+
   return (
     <>
       {/*md: or higher*/}
@@ -117,66 +167,12 @@ export default function PopulationChart({
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
-          <YAxis tickFormatter={(tick) => formatYAxis(tick)} />
+          <YAxis tickFormatter={formatYAxis} />
           <Tooltip
             formatter={(value, name) => [value, getPrefectureName(name)]}
           />
           <Legend {...getLegendProps()} />
-          {Object.keys(populationData[0] || {})
-            .filter((key) => key !== 'year')
-            .flatMap((prefCode) => {
-              const solidData = [];
-              const dashedData = [];
-              for (const entry of populationData) {
-                if (entry.year < boundaryYears[prefCode]) {
-                  solidData.push(entry);
-                } else if (entry.year > boundaryYears[prefCode]) {
-                  dashedData.push(entry);
-                } else {
-                  solidData.push(entry);
-                  dashedData.push(entry);
-                }
-              }
-              const duration = Math.random() * 600 + 900;
-              return [
-                <Line
-                  key={`${prefCode}-solid`}
-                  type="monotone"
-                  dataKey={prefCode}
-                  data={solidData}
-                  stroke={getColor(
-                    selectedPrefectures.indexOf(
-                      parseInt(prefCode.replace('Pref-', ''))
-                    )
-                  )}
-                  strokeDasharray="0"
-                  isAnimationActive={true}
-                  animationDuration={duration}
-                  animationEasing="linear"
-                  dot={false}
-                  activeDot={false}
-                />,
-                <Line
-                  key={`${prefCode}-dashed`}
-                  type="monotone"
-                  dataKey={prefCode}
-                  data={dashedData}
-                  stroke={getColor(
-                    selectedPrefectures.indexOf(
-                      parseInt(prefCode.replace('Pref-', ''))
-                    )
-                  )}
-                  strokeDasharray="3 3"
-                  legendType="none"
-                  isAnimationActive={true}
-                  animationBegin={duration}
-                  animationEasing="linear"
-                  tooltipType="none"
-                  dot={false}
-                  activeDot={false}
-                />,
-              ];
-            })}
+          {renderChartLines()}
         </LineChart>
       </ResponsiveContainer>
       {/*lower than md*/}
@@ -191,7 +187,7 @@ export default function PopulationChart({
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="year" type="number" domain={['dataMin', 'dataMax']} />
-          <YAxis tickFormatter={(tick) => formatYAxis(tick)} />
+          <YAxis tickFormatter={formatYAxis} />
           <Tooltip
             formatter={(value, name) => [value, getPrefectureName(name)]}
           />
@@ -203,61 +199,7 @@ export default function PopulationChart({
             }}
             formatter={(value) => [getPrefectureName(value)]}
           />
-          {Object.keys(populationData[0] || {})
-            .filter((key) => key !== 'year')
-            .flatMap((prefCode) => {
-              const solidData = [];
-              const dashedData = [];
-              for (const entry of populationData) {
-                if (entry.year < boundaryYears[prefCode]) {
-                  solidData.push(entry);
-                } else if (entry.year > boundaryYears[prefCode]) {
-                  dashedData.push(entry);
-                } else {
-                  solidData.push(entry);
-                  dashedData.push(entry);
-                }
-              }
-              const duration = Math.random() * 600 + 900;
-              return [
-                <Line
-                  key={`${prefCode}-solid`}
-                  type="monotone"
-                  dataKey={prefCode}
-                  data={solidData}
-                  stroke={getColor(
-                    selectedPrefectures.indexOf(
-                      parseInt(prefCode.replace('Pref-', ''))
-                    )
-                  )}
-                  strokeDasharray="0"
-                  isAnimationActive={true}
-                  animationDuration={duration}
-                  animationEasing="linear"
-                  dot={false}
-                  activeDot={false}
-                />,
-                <Line
-                  key={`${prefCode}-dashed`}
-                  type="monotone"
-                  dataKey={prefCode}
-                  data={dashedData}
-                  stroke={getColor(
-                    selectedPrefectures.indexOf(
-                      parseInt(prefCode.replace('Pref-', ''))
-                    )
-                  )}
-                  strokeDasharray="3 3"
-                  legendType="none"
-                  isAnimationActive={true}
-                  animationBegin={duration}
-                  animationEasing="linear"
-                  tooltipType="none"
-                  dot={false}
-                  activeDot={false}
-                />,
-              ];
-            })}
+          {renderChartLines()}
         </LineChart>
       </ResponsiveContainer>
     </>
