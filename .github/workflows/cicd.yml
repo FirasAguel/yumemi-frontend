@@ -46,7 +46,11 @@ jobs:
       - name: TypeScript type checking
         run: pnpm tsc --noEmit -p tsconfig.build.json
 
-      # Step 8: Build the Next.js app
+      # Step 8: Testing
+      - name: Test with Vitest
+        run: pnpm vitest
+
+      # Step 9: Build the Next.js app
       - name: Build Next.js app
         run: pnpm build
 
