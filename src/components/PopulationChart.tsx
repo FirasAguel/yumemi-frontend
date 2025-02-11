@@ -94,7 +94,7 @@ export default function PopulationChart({
         <div className="pointer-events-none absolute top-0 right-0 h-full w-0.5 bg-gradient-to-b from-white via-gray-300 to-white" />
         {payload
           .filter((entry) => entry.payload.legendType !== 'none')
-          .map((entry, index) => (
+          .map((entry) => (
             <div
               key={`item-${entry.value}`}
               className="flex min-w-25 items-center text-lg"
@@ -119,7 +119,6 @@ export default function PopulationChart({
     );
   };
   const legendHeight = 500;
-  const legendWidth = 160;
 
   const formatYAxis = (tick) => {
     return tick > 10000 ? (tick / 10000).toString() + '万' : tick;
