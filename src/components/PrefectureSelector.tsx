@@ -1,5 +1,7 @@
+'use client';
 import { Prefecture } from '@/types/interfaces';
 import { useState } from 'react';
+import PrefectureCheckbox from './PrefectureCheckbox';
 
 export default function PrefectureSelector({
   prefectures,
@@ -60,10 +62,6 @@ export default function PrefectureSelector({
     setLastClickedPrefCode(prefCode);
   };
 
-  // TODO: Refactor checkbox + label elements into a separate React component (PrefectureCheckbox).
-  // As part of this refactor, implement shift-click support on <label> to ensure consistent selection
-  // behavior when clicking either the checkbox or the label.
-
   const populationTypes = [
     { value: '総人口', label: '総人口' },
     { value: '年少人口', label: '年少人口' },
@@ -105,18 +103,13 @@ export default function PrefectureSelector({
       </div>
       <div className="flex max-w-104 flex-wrap gap-1">
         {prefectures.map((prefecture) => (
-          <div key={prefecture.prefCode} className="flex w-25 space-x-2">
-            <input
-              type="checkbox"
-              id={`pref-${prefecture.prefCode}`}
-              checked={selectedPrefectures.includes(prefecture.prefCode)}
-              onClick={(e) => handleCheckboxClick(prefecture.prefCode, e)}
-              onChange={() => {}} // Dummy handler for React warnings
-            ></input>
-            <label htmlFor={`pref-${prefecture.prefCode}`}>
-              {prefecture.prefName}
-            </label>
-          </div>
+          <PrefectureCheckbox
+            key={prefecture.prefCode}
+            prefCode={prefecture.prefCode}
+            prefName={prefecture.prefName}
+            checked={selectedPrefectures.includes(prefecture.prefCode)}
+            onCheckboxClick={handleCheckboxClick}
+          />
         ))}
       </div>
     </div>
