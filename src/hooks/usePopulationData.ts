@@ -139,6 +139,7 @@ export const usePopulationData = (
       isMounted = false;
       controller.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [populationType, prefCodes]);
 
   // Filter combined data to match selected prefectures (handles deselection)

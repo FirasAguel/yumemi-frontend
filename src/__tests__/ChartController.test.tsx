@@ -11,7 +11,15 @@ const mockPrefectures = [
 
 // Mock PrefectureSelector so we can simulate a population type change
 vi.mock('@/components/PrefectureSelector', () => ({
-  default: (props: any) => (
+  default: (props: {
+    prefectures: Prefecture[];
+    selectedPrefectures: number[];
+    onSelectionChange: (selected: number[]) => void;
+    selectedPopulationType: string;
+    onPopulationTypeChange: (
+      event: React.ChangeEvent<HTMLSelectElement>
+    ) => void;
+  }) => (
     <div data-testid="prefecture-selector">
       {/* Render a select element to simulate changing population type */}
       <select
@@ -28,7 +36,11 @@ vi.mock('@/components/PrefectureSelector', () => ({
 
 // Mock PopulationChart to verify it receives the right props
 vi.mock('@/components/PopulationChart', () => ({
-  default: (props: any) => (
+  default: (props: {
+    prefectures: Prefecture[];
+    selectedPrefectures: number[];
+    populationType: string;
+  }) => (
     <div data-testid="population-chart">
       PopulationChart: {props.populationType} with{' '}
       {props.selectedPrefectures.length} selected

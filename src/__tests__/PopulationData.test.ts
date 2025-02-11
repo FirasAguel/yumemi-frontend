@@ -4,7 +4,7 @@ import { getPopulation } from '@/services/api';
 
 // Mock getPopulation to return a sample FullPopulationData object.
 vi.mock('@/services/api', () => ({
-  getPopulation: vi.fn(async (prefCode: number) => ({
+  getPopulation: vi.fn(async () => ({
     boundaryYear: 2020,
     populationData: [
       {

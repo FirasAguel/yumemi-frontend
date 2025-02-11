@@ -71,7 +71,7 @@ describe('usePopulationData', () => {
 
   it('handles fetch errors and sets isError', async () => {
     // Make getPopulation throw an error on the next call.
-    (getPopulation as any).mockImplementationOnce(() => {
+    (getPopulation as FullPopulationData).mockImplementationOnce(() => {
       throw new Error('Fetch error');
     });
 
