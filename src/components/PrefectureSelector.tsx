@@ -72,28 +72,28 @@ export default function PrefectureSelector({
   ];
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex space-x-4 mb-4">
+    <div className="flex flex-col items-start  w-fit">
+      <div className="flex flex-wrap gap-2">
         <button
           onClick={selectAll}
-          className="px-4 py-2 h-min my-auto bg-blue-500 text-white rounded"
+          className="px-4 py-2 mb-2 my-auto h-min bg-blue-500 text-white rounded"
         >
           Select All
         </button>
         <button
           onClick={deselectAll}
-          className="px-4 py-2 h-min my-auto bg-red-500 text-white rounded"
+          className="px-4 py-2 mb-2 my-auto h-min  bg-red-500 text-white rounded"
         >
           Deselect All
         </button>
-        <div>
-          <label className="block mb-2 text-sm font-medium">
+        <div className="py-2">
+          <label className="block mb-1 text-sm font-medium">
             Population Type
           </label>
           <select
             value={selectedPopulationType}
             onChange={onPopulationTypeChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-1 border border-gray-300 rounded-md"
           >
             {populationTypes.map((type) => (
               <option key={type.value} value={type.value}>
@@ -103,7 +103,7 @@ export default function PrefectureSelector({
           </select>
         </div>
       </div>
-      <div className="flex flex-wrap w-108 space-x-2">
+      <div className="flex flex-wrap max-w-104 gap-1">
         {prefectures.map((prefecture) => (
           <div key={prefecture.prefCode} className="flex space-x-2 w-25">
             <input
