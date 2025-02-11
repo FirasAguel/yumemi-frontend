@@ -139,8 +139,9 @@ export default function PopulationChart({
   };
   const legendHeight = 500;
 
-  const formatYAxis = (tick) => {
-    return tick > 10000 ? (tick / 10000).toString() + '万' : tick;
+  // Ensure tick formatter always returns a string.
+  const formatYAxis = (tick: number): string => {
+    return tick > 10000 ? (tick / 10000).toString() + '万' : tick.toString();
   };
 
   // Define the style type for the legend wrapper, using a literal union for textAlign.
