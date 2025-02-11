@@ -10,6 +10,18 @@ export default defineConfig({
     globals: true,
     coverage: {
       reporter: ['text', 'html'],
+      exclude: [
+        '**/next.config.ts',
+        '**/postcss.config.mjs',
+        '**/tailwind.config.ts',
+        '**/eslint.config.mjs',
+        '**/next-env.d.ts',
+        '**/vitest.config.mts',
+        '**/.next/**',
+        '**/app/layout.tsx',
+        '**/app/loading.tsx',
+        '**/services/api.ts',
+      ],
     },
   },
 });
