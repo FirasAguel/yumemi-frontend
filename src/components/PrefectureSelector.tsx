@@ -72,28 +72,28 @@ export default function PrefectureSelector({
   ];
 
   return (
-    <div className="flex flex-col items-start  w-fit">
+    <div className="flex w-fit flex-col items-start">
       <div className="flex flex-wrap gap-2">
         <button
           onClick={selectAll}
-          className="px-4 py-2 mb-2 my-auto h-min bg-blue-500 text-white rounded"
+          className="my-auto mb-2 h-min rounded bg-blue-500 px-4 py-2 text-white"
         >
           Select All
         </button>
         <button
           onClick={deselectAll}
-          className="px-4 py-2 mb-2 my-auto h-min  bg-red-500 text-white rounded"
+          className="my-auto mb-2 h-min rounded bg-red-500 px-4 py-2 text-white"
         >
           Deselect All
         </button>
         <div className="py-2">
-          <label className="block mb-1 text-sm font-medium">
+          <label className="mb-1 block text-sm font-medium">
             Population Type
           </label>
           <select
             value={selectedPopulationType}
             onChange={onPopulationTypeChange}
-            className="w-full p-1 border border-gray-300 rounded-md"
+            className="w-full rounded-md border border-gray-300 p-1"
           >
             {populationTypes.map((type) => (
               <option key={type.value} value={type.value}>
@@ -103,9 +103,9 @@ export default function PrefectureSelector({
           </select>
         </div>
       </div>
-      <div className="flex flex-wrap max-w-104 gap-1">
+      <div className="flex max-w-104 flex-wrap gap-1">
         {prefectures.map((prefecture) => (
-          <div key={prefecture.prefCode} className="flex space-x-2 w-25">
+          <div key={prefecture.prefCode} className="flex w-25 space-x-2">
             <input
               type="checkbox"
               id={`pref-${prefecture.prefCode}`}

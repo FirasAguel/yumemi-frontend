@@ -87,34 +87,34 @@ export default function PopulationChart({
 
     return (
       <div
-        className="space-y-2 flex flex-wrap justify-between overflow-y-scroll hide-scrollbar h-[500px] py-50 pr-2 pl-2 lg:pr-4"
+        className="hide-scrollbar flex h-[500px] flex-wrap justify-between space-y-2 overflow-y-scroll py-50 pr-2 pl-2 lg:pr-4"
         ref={containerRef}
       >
-        <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-white via-white/90 to-transparent pointer-events-none" />
-        <div className="absolute top-0 right-0 w-0.5 h-full bg-gradient-to-b from-white via-gray-300 to-white pointer-events-none" />
+        <div className="pointer-events-none absolute top-0 left-0 h-40 w-full bg-gradient-to-b from-white via-white/90 to-transparent" />
+        <div className="pointer-events-none absolute top-0 right-0 h-full w-0.5 bg-gradient-to-b from-white via-gray-300 to-white" />
         {payload
           .filter((entry) => entry.payload.legendType !== 'none')
           .map((entry, index) => (
             <div
               key={`item-${entry.value}`}
-              className="flex items-center text-lg min-w-25"
+              className="flex min-w-25 items-center text-lg"
             >
               <span
-                className="inline-block w-3 h-0.5 mr-0.5"
+                className="mr-0.5 inline-block h-0.5 w-3"
                 style={{ backgroundColor: entry.color }}
               ></span>
               <span
-                className="inline-block w-0.5 h-0.5 mr-0.5"
+                className="mr-0.5 inline-block h-0.5 w-0.5"
                 style={{ backgroundColor: entry.color }}
               ></span>
               <span
-                className="inline-block w-0.5 h-0.5 mr-2"
+                className="mr-2 inline-block h-0.5 w-0.5"
                 style={{ backgroundColor: entry.color }}
               ></span>
               {getPrefectureName(entry.value)}
             </div>
           ))}
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-white via-white/90 to-transparent pointer-events-none" />
+        <div className="pointer-events-none absolute bottom-0 left-0 h-40 w-full bg-linear-to-t from-white via-white/90 to-transparent" />
       </div>
     );
   };
