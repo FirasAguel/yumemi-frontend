@@ -57,6 +57,8 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-24.04
     needs: lint-and-test
+    env:
+      X_API_KEY: ${{ secrets.X_API_KEY }}
     permissions:
       packages: write
 
