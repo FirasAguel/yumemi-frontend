@@ -48,7 +48,7 @@ jobs:
 
       # Step 8: Check types with TypeScript
       - name: Check types with TypeScript
-        run: pnpm tsc --noEmit
+        run: pnpm tsc --noEmit -p tsconfig.build.json
 
       # Step 9: Build the project
       - name: Build Next.js app
