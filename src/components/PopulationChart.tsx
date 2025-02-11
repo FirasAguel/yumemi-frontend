@@ -35,9 +35,25 @@ export default function PopulationChart({
   const populationData = data?.populationData || [];
   const boundaryYears = data?.boundaryYears || {};
 
-  const CustomLegend = (props) => {
-    const { payload } = props;
-    const containerRef = useRef(null);
+  // Define our custom legend item type.
+  interface CustomLegendItem {
+    value?: string | number;
+    color?: string;
+    dataKey?: string | number;
+    payload?: {
+      legendType?: string;
+    };
+  }
+
+  // Define the props that our custom legend expects.
+  interface CustomLegendProps {
+    payload?: CustomLegendItem[];
+  }
+
+  // Our custom legend component.
+  const CustomLegend = (props: CustomLegendProps) => {
+    const { payload = [] } = props;
+    const containerRef = useRef<HTMLDivElement>(null);
     const [scrollingDown, setScrollingDown] = useState(true);
 
     useEffect(() => {
@@ -93,8 +109,11 @@ export default function PopulationChart({
         <div className="pointer-events-none absolute top-0 left-0 h-40 w-full bg-gradient-to-b from-white via-white/90 to-transparent" />
         <div className="pointer-events-none absolute top-0 right-0 h-full w-0.5 bg-gradient-to-b from-white via-gray-300 to-white" />
         {payload
-          .filter((entry) => entry.payload.legendType !== 'none')
-          .map((entry) => (
+          // Check that payload exists before accessing legendType.
+          .filter((entry: CustomLegendItem) =>
+            entry.payload ? entry.payload.legendType !== 'none' : false
+          )
+          .map((entry: CustomLegendItem) => (
             <div
               key={`item-${entry.value}`}
               className="flex min-w-25 items-center text-lg"
@@ -124,19 +143,32 @@ export default function PopulationChart({
     return tick > 10000 ? (tick / 10000).toString() + '万' : tick;
   };
 
+  // Define the style type for the legend wrapper, using a literal union for textAlign.
+  interface LegendWrapperStyle {
+    position: 'absolute';
+    maxWidth: string;
+    minHeight: string;
+    right: number;
+    top: string;
+    transform: string;
+    textAlign: 'left' | 'center' | 'right';
+  }
+
+  const legendWrapperStyle: LegendWrapperStyle = {
+    position: 'absolute',
+    maxWidth: '120px',
+    minHeight: `${legendHeight}px`,
+    right: 0,
+    top: `${legendHeight / 2}px`,
+    transform: 'translateY(-50%)',
+    textAlign: 'left',
+  };
+
   const getLegendProps = () => {
     return {
       content: <CustomLegend />,
       height: 1,
-      wrapperStyle: {
-        position: 'absolute',
-        maxWidth: '120px',
-        minHeight: `${legendHeight}px`,
-        right: 0,
-        top: `${legendHeight / 2}px`,
-        transform: 'translateY(-50%)',
-        textAlign: 'left',
-      },
+      wrapperStyle: legendWrapperStyle,
     };
   };
 
