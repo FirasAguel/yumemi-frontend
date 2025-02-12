@@ -29,6 +29,10 @@ FROM node:22.13.1-alpine AS runner
 
 WORKDIR /app
 
+# Declare the build argument for the runner stage and set it as an environment variable
+ARG X_API_KEY
+ENV X_API_KEY=${X_API_KEY}
+
 # Set environment variables
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
