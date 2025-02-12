@@ -13,9 +13,6 @@ export default async function Home() {
       <main className="flex flex-1 flex-col items-center justify-center">
         <ChartController prefectures={prefectures} />
       </main>
-      <footer className="p-5 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Firas. All rights reserved.
-      </footer>
     </div>
   );
 }
