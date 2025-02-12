@@ -75,6 +75,7 @@ export const usePopulationData = (
               { prefCode: code, data: relevantData },
             ]);
           }
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           setIsError(true);
         }
@@ -116,6 +117,7 @@ export const usePopulationData = (
               { prefCode: code, data: relevantData },
             ]);
           }
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           setIsError(true);
         }
