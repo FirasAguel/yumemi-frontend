@@ -3,6 +3,12 @@ FROM node:22.13.1-alpine AS builder
 
 WORKDIR /app
 
+# Declare the build argument
+ARG X_API_KEY
+
+# Set the environment variable for build time
+ENV X_API_KEY=${X_API_KEY}
+
 # Enable pnpm
 RUN npm install -g pnpm@latest
 
