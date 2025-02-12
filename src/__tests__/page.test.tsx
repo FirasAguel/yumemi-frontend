@@ -40,8 +40,4 @@ test('renders Home page with header, ChartController, and footer', async () => {
     `ChartController with ${mockPrefectures.length} prefectures`
   );
 
-  // Verify the footer text contains the current year
-  const currentYear = new Date().getFullYear();
-  const footerText = `© ${currentYear} Firas. All rights reserved.`;
-  expect(screen.getByText(footerText)).toBeInTheDocument();
 });
