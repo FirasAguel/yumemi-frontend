@@ -39,5 +39,4 @@ test('renders Home page with header, ChartController, and footer', async () => {
   expect(chartController).toHaveTextContent(
     `ChartController with ${mockPrefectures.length} prefectures`
   );
-
 });
