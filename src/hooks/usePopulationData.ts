@@ -12,14 +12,12 @@ const populationCache = new Map<
 export const fetchAndCachePrefecture = async (
   prefCode: number
 ): Promise<{ [key: string]: ChartPopulationData }> => {
-  console.log(populationCache);
   if (populationCache.has(prefCode)) {
     return populationCache.get(prefCode)!;
   }
 
   // Fetch if data isn't cached
   const data: FullPopulationData = await getPopulation(prefCode);
-  console.log({ prefCode, data });
 
   const transformedData = data.populationData.reduce(
     (acc: { [key: string]: ChartPopulationData }, item) => {
@@ -58,7 +56,6 @@ export const usePopulationData = (
     if (previousType.current === populationType) return; // Skip if populationType hasn’t changed
     previousType.current = populationType; // Update the stored type
 
-    console.log('Hook 1 called');
     let isMounted = true;
     const controller = new AbortController();
 
@@ -79,10 +76,7 @@ export const usePopulationData = (
             ]);
           }
         } catch (error) {
-          //if (error.name !== 'AbortError' && isMounted) {
-          console.log(error);
           setIsError(true);
-          //}
         }
       }
 
@@ -101,7 +95,6 @@ export const usePopulationData = (
   useEffect(() => {
     if (prefCodes.length === 0) return;
 
-    console.log('Hook 2 called');
     let isMounted = true;
     const controller = new AbortController();
 
@@ -124,10 +117,7 @@ export const usePopulationData = (
             ]);
           }
         } catch (error) {
-          //if (error.name !== 'AbortError' && isMounted) {
-          console.log(error);
           setIsError(true);
-          //}
         }
       }
     };
@@ -174,8 +164,6 @@ const combinePopulationData = (
       yearEntry[prefKey] = entry[prefKey];
     });
   });
-
-  console.log('Combined Population Data:', combinedPopulationData);
 
   return { populationData: combinedPopulationData, boundaryYears };
 };
