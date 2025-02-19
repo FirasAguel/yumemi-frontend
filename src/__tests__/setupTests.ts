@@ -2,6 +2,7 @@ import { expect } from 'vitest';
 
 declare global {
   // Assigns Vitest's `expect` type to `globalThis.expect`
+  // eslint-disable-next-line no-var
   var expect: typeof import('vitest').expect;
 }
 
