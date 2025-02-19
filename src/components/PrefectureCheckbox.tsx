@@ -38,6 +38,7 @@ const PrefectureCheckbox = ({
         type="checkbox"
         checked={checked}
         readOnly
+        aria-label={prefName}
         className="pointer-events-none transition-colors group-hover:border-blue-500"
       />
       <span className="transition-colors group-hover:text-blue-500">
