@@ -5,7 +5,10 @@ interface PrefectureCheckboxProps {
   prefCode: number;
   prefName: string;
   checked: boolean;
-  onCheckboxClick: (prefCode: number, event: React.MouseEvent<HTMLElement>) => void;
+  onCheckboxClick: (
+    prefCode: number,
+    event: React.MouseEvent<HTMLElement>
+  ) => void;
 }
 
 const PrefectureCheckbox = ({
@@ -26,8 +29,8 @@ const PrefectureCheckbox = ({
   };
 
   return (
-    <div 
-      className="flex w-25 space-x-2 cursor-pointer rounded transition-colors group"
+    <div
+      className="group flex w-25 cursor-pointer space-x-2 rounded transition-colors"
       onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
