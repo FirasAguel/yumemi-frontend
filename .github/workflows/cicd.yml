@@ -44,7 +44,7 @@ jobs:
 
       # Step 7: TypeScript Type Check
       - name: TypeScript type checking
-        run: pnpm tsc --noEmit -p tsconfig.build.json
+        run: pnpm tsc --noEmit
 
       # Step 8: Testing
       - name: Test with Vitest
