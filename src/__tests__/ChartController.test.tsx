@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { test, expect, vi } from 'vitest';
 import ChartController from '@/components/ChartController';
+import { Prefecture } from '@/types/interfaces';
 
 // Sample prefecture data for testing
 const mockPrefectures = [

@@ -3,6 +3,8 @@ import { render, waitFor, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { usePopulationData } from '@/hooks/usePopulationData';
 import { getPopulation } from '@/services/api';
+import { FullPopulationData } from '@/types/interfaces'
+import * as api from '@/services/api';
 
 // Create a test component to use the hook.
 const TestComponent = ({
@@ -70,15 +72,16 @@ describe('usePopulationData', () => {
   });
 
   it('handles fetch errors and sets isError', async () => {
-    // Make getPopulation throw an error on the next call.
-    (getPopulation as FullPopulationData).mockImplementationOnce(() => {
-      throw new Error('Fetch error');
-    });
-
+    // Mock getPopulation to throw an error
+    vi.spyOn(api, 'getPopulation').mockRejectedValue(new Error('Fetch error'));
+  
     render(<TestComponent prefCodes={[3]} populationType="総人口" />);
-
+  
     await waitFor(() => {
       expect(screen.getByTestId('error')).toBeInTheDocument();
     });
+    // Restore the original implementation after the test
+    vi.restoreAllMocks();
   });
+
 });

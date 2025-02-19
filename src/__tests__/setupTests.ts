@@ -1,4 +1,10 @@
 import { expect } from 'vitest';
+
+declare global {
+  // Assigns Vitest's `expect` type to `globalThis.expect`
+  var expect: typeof import('vitest').expect;
+}
+
 // Make sure global expect is defined before importing jest-dom
 globalThis.expect = expect;
 
@@ -11,5 +17,4 @@ if (typeof global.ResizeObserver === 'undefined') {
   };
 }
 
-// Dynamically import jest-dom matchers
-await import('@testing-library/jest-dom');
+import '@testing-library/jest-dom';
