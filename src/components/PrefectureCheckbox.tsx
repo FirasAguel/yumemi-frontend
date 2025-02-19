@@ -5,10 +5,7 @@ interface PrefectureCheckboxProps {
   prefCode: number;
   prefName: string;
   checked: boolean;
-  onCheckboxClick: (
-    prefCode: number,
-    event: React.MouseEvent<HTMLElement>
-  ) => void;
+  onCheckboxClick: (prefCode: number, event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const PrefectureCheckbox = ({
@@ -21,9 +18,17 @@ const PrefectureCheckbox = ({
     onCheckboxClick(prefCode, e);
   };
 
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Prevent text selection during shift-click.
+    if (e.shiftKey) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <div 
       className="flex w-25 space-x-2 cursor-pointer rounded transition-colors group"
+      onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
       <input
@@ -39,4 +44,4 @@ const PrefectureCheckbox = ({
   );
 };
 
-export default PrefectureCheckbox;
+export default React.memo(PrefectureCheckbox);
