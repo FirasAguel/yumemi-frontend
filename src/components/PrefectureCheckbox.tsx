@@ -7,7 +7,7 @@ interface PrefectureCheckboxProps {
   checked: boolean;
   onCheckboxClick: (
     prefCode: number,
-    event: React.MouseEvent<HTMLInputElement>
+    event: React.MouseEvent<HTMLElement>
   ) => void;
 }
 
@@ -17,31 +17,24 @@ const PrefectureCheckbox = ({
   checked,
   onCheckboxClick,
 }: PrefectureCheckboxProps) => {
-  const handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     onCheckboxClick(prefCode, e);
   };
 
-  const handleLabelClick = (e: React.MouseEvent<HTMLLabelElement>) => {
-    // Pass the event from the label to the checkbox click handler.
-    // Casting the event as the expected type since both share the 'shiftKey' property.
-    onCheckboxClick(
-      prefCode,
-      e as unknown as React.MouseEvent<HTMLInputElement>
-    );
-  };
-
   return (
-    <div className="flex w-25 space-x-2">
+    <div 
+      className="flex w-25 space-x-2 cursor-pointer rounded transition-colors group"
+      onClick={handleClick}
+    >
       <input
         type="checkbox"
-        id={`pref-${prefCode}`}
         checked={checked}
-        onClick={handleInputClick}
-        onChange={() => {}} // Dummy handler to satisfy React
+        readOnly
+        className="pointer-events-none transition-colors group-hover:border-blue-500"
       />
-      <label htmlFor={`pref-${prefCode}`} onClick={handleLabelClick}>
+      <span className="transition-colors group-hover:text-blue-500">
         {prefName}
-      </label>
+      </span>
     </div>
   );
 };
