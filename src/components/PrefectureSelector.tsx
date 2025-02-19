@@ -31,7 +31,7 @@ export default function PrefectureSelector({
 
   const handleCheckboxClick = (
     prefCode: number,
-    event: React.MouseEvent<HTMLInputElement>
+    event: React.MouseEvent<HTMLElement>
   ) => {
     let newSelected = [...selectedPrefectures];
 
